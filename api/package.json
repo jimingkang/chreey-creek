@@ -21,7 +21,9 @@
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "koa-views": "^6.2.0",
-    "rss-parser": "^3.13.0"
+    "pg": "^8.16.0",
+    "rss-parser": "^3.13.0",
+    "sequelize": "^6.37.7"
   },
   "devDependencies": {
     "nodemon": "^1.19.4"

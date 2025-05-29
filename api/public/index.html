@@ -30,7 +30,7 @@
   <script>
     async function loadFeed(url) {
       try {
-        const response = await fetch(`/api/feeds?url=${encodeURIComponent(url)}`);
+        const response = await fetch(`/load?url=${encodeURIComponent(url)}`);
         const feed = await response.json();
         displayFeed(feed);
       } catch (error) {
@@ -41,7 +41,7 @@
     
     async function loadAllFeeds() {
       try {
-        const response = await fetch('/api/feeds/multiple');
+        const response = await fetch('/load/multiple');
         const feeds = await response.json();
         
         document.getElementById('feedContainer').innerHTML = '';

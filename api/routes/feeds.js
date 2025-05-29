@@ -1,44 +1,68 @@
 const Router = require('koa-router');
-const RSSParser = require('rss-parser');
+const rssService = require('../services/rssService');
+const db = require('../models');
+
 const router = new Router({ prefix: '/feeds' });
 
-const defaultFeeds = [
-  'http://rss.cnn.com/rss/cnn_topstories.rss',
-  'https://www.bbc.com/news/world/rss.xml',
-  'https://techcrunch.com/feed/'
-];
-
-const rssParser = new RSSParser();
-
-// Get single feed
-router.get('/', async (ctx) => {
+// Add new feed
+router.post('/', async (ctx) => {
   try {
-    const feedUrl = ctx.query.url || defaultFeeds[0];
-    const feed = await rssParser.parseURL(feedUrl);
+    const { url } = ctx.request.body;
+    const feed = await rssService.fetchAndStoreFeed(url);
     ctx.body = feed;
   } catch (error) {
-    ctx.status = 500;
-    ctx.body = { error: 'Failed to fetch RSS feed' };
+    ctx.status = 400;
+    ctx.body = { error: error.message };
   }
 });
 
-// Get multiple feeds
-router.get('/multiple', async (ctx) => {
+// Get all feeds
+router.get('/', async (ctx) => {
+  const feeds = await db.Feed.findAll({
+    order: [['lastUpdated', 'DESC']]
+  });
+  ctx.body = feeds;
+});
+
+// Get single feed with items
+router.get('/:id', async (ctx) => {
+  const feed = await rssService.getFeedWithItems(ctx.params.id);
+  if (!feed) {
+    ctx.status = 404;
+    ctx.body = { error: 'Feed not found' };
+    return;
+  }
+  ctx.body = feed;
+});
+
+// Refresh feed
+router.post('/:id/refresh', async (ctx) => {
+  const feed = await db.Feed.findByPk(ctx.params.id);
+  if (!feed) {
+    ctx.status = 404;
+    ctx.body = { error: 'Feed not found' };
+    return;
+  }
+  
   try {
-    const feedUrls = ctx.query.urls ? ctx.query.urls.split(',') : defaultFeeds;
-    
-    const feedPromises = feedUrls.map(url => 
-      rssParser.parseURL(url).catch(e => {
-        console.error(`Error parsing ${url}:`, e);
-        return null;
-      })
-    );
-    
-    const feeds = await Promise.all(feedPromises);
-    ctx.body = feeds.filter(feed => feed !== null);
+    const updatedFeed = await rssService.fetchAndStoreFeed(feed.url);
+    ctx.body = updatedFeed;
+  } catch (error) {
+    ctx.status = 400;
+    ctx.body = { error: error.message };
+  }
+});
+// Get all feeds for the frontend
+router.get('/feeds/titles', async (ctx) => {
+  try {
+    const feeds = await Feed.findAll({
+      attributes: ['id', 'url', 'title'], // Only get necessary fields
+      order: [['title', 'ASC']] // Sort alphabetically
+    });
+    ctx.body = feeds;
   } catch (error) {
     ctx.status = 500;
-    ctx.body = { error: 'Failed to fetch RSS feeds' };
+    ctx.body = { error: 'Failed to fetch feeds' };
   }
 });
 
