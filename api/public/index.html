@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Koa2 RSS Reader</title>
+  <style>
+    /* Same CSS as before */
+  </style>
+</head>
+<body>
+  <h1>Koa2 RSS Reader</h1>
+  
+  <div class="controls">
+    <h2>Add RSS Feed</h2>
+    <input type="text" id="feedUrl" placeholder="Enter RSS feed URL">
+    <button onclick="addFeed()">Add Feed</button>
+    
+    <h3>Default Feeds</h3>
+    <div id="defaultFeeds">
+      <button onclick="loadFeed('http://rss.cnn.com/rss/cnn_topstories.rss')">CNN Top Stories</button>
+      <button onclick="loadFeed('https://www.bbc.com/news/world/rss.xml')">BBC World News</button>
+      <button onclick="loadFeed('https://techcrunch.com/feed/')">TechCrunch</button>
+      <button onclick="loadAllFeeds()">Load All Feeds</button>
+    </div>
+  </div>
+  
+  <div id="feedContainer" class="feed-container"></div>
+  
+  <script>
+    async function loadFeed(url) {
+      try {
+        const response = await fetch(`/api/feeds?url=${encodeURIComponent(url)}`);
+        const feed = await response.json();
+        displayFeed(feed);
+      } catch (error) {
+        console.error('Error loading feed:', error);
+        alert('Failed to load feed. Please check the URL and try again.');
+      }
+    }
+    
+    async function loadAllFeeds() {
+      try {
+        const response = await fetch('/api/feeds/multiple');
+        const feeds = await response.json();
+        
+        document.getElementById('feedContainer').innerHTML = '';
+        
+        feeds.forEach(feed => {
+          if (feed) {
+            displayFeed(feed);
+          }
+        });
+      } catch (error) {
+        console.error('Error loading all feeds:', error);
+        alert('Failed to load feeds. Please try again.');
+      }
+    }
+    
+    function displayFeed(feed) {
+      const feedContainer = document.getElementById('feedContainer');
+      
+      const feedElement = document.createElement('div');
+      feedElement.className = 'feed';
+      
+      let html = `
+        <h2>${feed.title}</h2>
+        <p>${feed.description}</p>
+      `;
+      
+      feed.items.slice(0, 10).forEach(item => {
+        html += `
+          <div class="feed-item">
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p>${item.pubDate ? new Date(item.pubDate).toLocaleString() : ''}</p>
+            <p>${item.contentSnippet || ''}</p>
+          </div>
+        `;
+      });
+      
+      feedElement.innerHTML = html;
+      feedContainer.appendChild(feedElement);
+    }
+    
+    function addFeed() {
+      const urlInput = document.getElementById('feedUrl');
+      const url = urlInput.value.trim();
+      
+      if (url) {
+        loadFeed(url);
+        urlInput.value = '';
+      } else {
+        alert('Please enter a valid RSS feed URL');
+      }
+    }
+    
+    // Load a default feed on page load
+    window.onload = function() {
+      loadFeed('http://rss.cnn.com/rss/cnn_topstories.rss');
+    };
+  </script>
+</body>
+</html>
