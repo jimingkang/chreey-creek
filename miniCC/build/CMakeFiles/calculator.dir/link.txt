@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -g   CMakeFiles/calculator.dir/main.c.o CMakeFiles/calculator.dir/lexer.c.o CMakeFiles/calculator.dir/ast.c.o CMakeFiles/calculator.dir/parser.c.o  -o calculator 

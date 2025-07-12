@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../ast.h
+stdio.h
+-
+
+../lexer.h
+ast.h
+../ast.h
+
+/home/rlk/Downloads/chreey-creek/miniCC/build/parser.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+ast.h
+/home/rlk/Downloads/chreey-creek/miniCC/build/ast.h
+lexer.h
+/home/rlk/Downloads/chreey-creek/miniCC/build/lexer.h
+assert.h
+-
+stdio.h
+-
+

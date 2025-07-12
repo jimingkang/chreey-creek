@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtinycompiler_lib.a  CMakeFiles/tinycompiler_lib.dir/src/lexer.c.o CMakeFiles/tinycompiler_lib.dir/src/parser.c.o CMakeFiles/tinycompiler_lib.dir/src/codegen.c.o CMakeFiles/tinycompiler_lib.dir/src/utils.c.o
+/usr/bin/ranlib libtinycompiler_lib.a

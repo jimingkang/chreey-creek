@@ -1,0 +1,12 @@
+.section .text
+    movl 0(%rbp), %eax
+    pushl %eax
+    movl $50, %eax
+    movl %eax, %ebx
+    popl %eax
+    cmpl $0, %eax
+    je .L0
+    jmp .L1
+.L0:
+.L1:
+.section .data

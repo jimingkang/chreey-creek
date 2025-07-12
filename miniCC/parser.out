@@ -1,0 +1,539 @@
+State 0:
+          program ::= * statement_list
+          statement_list ::= * statement_list statement
+          statement_list ::= * statement
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                       program accept
+                statement_list shift        3      
+                     statement shift-reduce 2      statement_list ::= statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 1:
+          statement_list ::= * statement_list statement
+          statement_list ::= * statement
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= LBRACE * statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                statement_list shift        2      
+                     statement shift-reduce 2      statement_list ::= statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 2:
+          statement_list ::= statement_list * statement
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= LBRACE statement_list * RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        RBRACE shift-reduce 7      statement ::= LBRACE statement_list RBRACE
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                     statement shift-reduce 1      statement_list ::= statement_list statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 3:
+      (0) program ::= statement_list *
+          statement_list ::= statement_list * statement
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                             $ reduce       0      program ::= statement_list
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                     statement shift-reduce 1      statement_list ::= statement_list statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 4:
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= WHILE LPAREN expression RPAREN * statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                     statement shift-reduce 6      statement ::= WHILE LPAREN expression RPAREN statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 5:
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= IF LPAREN expression RPAREN statement ELSE * statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                     statement shift-reduce 5      statement ::= IF LPAREN expression RPAREN statement ELSE statement
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 6:
+          statement ::= * IDENTIFIER ASSIGN expression SEMICOLON
+          statement ::= * IF LPAREN expression RPAREN statement
+          statement ::= IF LPAREN expression RPAREN * statement
+          statement ::= * IF LPAREN expression RPAREN statement ELSE statement
+          statement ::= IF LPAREN expression RPAREN * statement ELSE statement
+          statement ::= * WHILE LPAREN expression RPAREN statement
+          statement ::= * LBRACE statement_list RBRACE
+          statement ::= * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                            IF shift        26     
+                    IDENTIFIER shift        27     
+                        LPAREN shift        9      
+                         WHILE shift        24     
+                        LBRACE shift        1      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                     statement shift        25     
+                    expression shift        16     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 7:
+          statement ::= WHILE LPAREN * expression RPAREN statement
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                    expression shift        17     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 8:
+          statement ::= IF LPAREN * expression RPAREN statement
+          statement ::= IF LPAREN * expression RPAREN statement ELSE statement
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                    expression shift        18     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 9:
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= LPAREN * expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                    expression shift        19     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 10:
+          statement ::= IDENTIFIER ASSIGN * expression SEMICOLON
+          expression ::= * expression PLUS term
+          expression ::= * expression MINUS term
+          expression ::= * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                    expression shift        20     
+                          term shift        21     
+                        factor shift-reduce 14     term ::= factor
+
+State 11:
+          expression ::= expression MINUS * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                          term shift        22     
+                        factor shift-reduce 14     term ::= factor
+
+State 12:
+          expression ::= expression PLUS * term
+          term ::= * term MULTIPLY factor
+          term ::= * term DIVIDE factor
+          term ::= * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                          term shift        23     
+                        factor shift-reduce 14     term ::= factor
+
+State 13:
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+          factor ::= MINUS * factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                        factor shift-reduce 18     factor ::= MINUS factor
+
+State 14:
+          term ::= term DIVIDE * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                        factor shift-reduce 13     term ::= term DIVIDE factor
+
+State 15:
+          term ::= term MULTIPLY * factor
+          factor ::= * NUMBER
+          factor ::= * IDENTIFIER
+          factor ::= * LPAREN expression RPAREN
+          factor ::= * MINUS factor
+
+                         MINUS shift        13     
+                    IDENTIFIER shift-reduce 16     factor ::= IDENTIFIER
+                        LPAREN shift        9      
+                        NUMBER shift-reduce 15     factor ::= NUMBER
+                        factor shift-reduce 12     term ::= term MULTIPLY factor
+
+State 16:
+          statement ::= expression * SEMICOLON
+          expression ::= expression * PLUS term
+          expression ::= expression * MINUS term
+
+                          PLUS shift        12     
+                         MINUS shift        11     
+                     SEMICOLON shift-reduce 8      statement ::= expression SEMICOLON
+
+State 17:
+          statement ::= WHILE LPAREN expression * RPAREN statement
+          expression ::= expression * PLUS term
+          expression ::= expression * MINUS term
+
+                          PLUS shift        12     
+                         MINUS shift        11     
+                        RPAREN shift        4      
+
+State 18:
+          statement ::= IF LPAREN expression * RPAREN statement
+          statement ::= IF LPAREN expression * RPAREN statement ELSE statement
+          expression ::= expression * PLUS term
+          expression ::= expression * MINUS term
+
+                          PLUS shift        12     
+                         MINUS shift        11     
+                        RPAREN shift        6      
+
+State 19:
+          expression ::= expression * PLUS term
+          expression ::= expression * MINUS term
+          factor ::= LPAREN expression * RPAREN
+
+                          PLUS shift        12     
+                         MINUS shift        11     
+                        RPAREN shift-reduce 17     factor ::= LPAREN expression RPAREN
+
+State 20:
+          statement ::= IDENTIFIER ASSIGN expression * SEMICOLON
+          expression ::= expression * PLUS term
+          expression ::= expression * MINUS term
+
+                          PLUS shift        12     
+                         MINUS shift        11     
+                     SEMICOLON shift-reduce 3      statement ::= IDENTIFIER ASSIGN expression SEMICOLON
+
+State 21:
+     (11) expression ::= term *
+          term ::= term * MULTIPLY factor
+          term ::= term * DIVIDE factor
+
+                      MULTIPLY shift        15     
+                        DIVIDE shift        14     
+                     {default} reduce       11     expression ::= term
+
+State 22:
+     (10) expression ::= expression MINUS term *
+          term ::= term * MULTIPLY factor
+          term ::= term * DIVIDE factor
+
+                      MULTIPLY shift        15     
+                        DIVIDE shift        14     
+                     {default} reduce       10     expression ::= expression MINUS term
+
+State 23:
+      (9) expression ::= expression PLUS term *
+          term ::= term * MULTIPLY factor
+          term ::= term * DIVIDE factor
+
+                      MULTIPLY shift        15     
+                        DIVIDE shift        14     
+                     {default} reduce       9      expression ::= expression PLUS term
+
+State 24:
+          statement ::= WHILE * LPAREN expression RPAREN statement
+
+                        LPAREN shift        7      
+
+State 25:
+      (4) statement ::= IF LPAREN expression RPAREN statement *
+          statement ::= IF LPAREN expression RPAREN statement * ELSE statement
+
+                          ELSE shift        5      
+                     {default} reduce       4      statement ::= IF LPAREN expression RPAREN statement
+
+State 26:
+          statement ::= IF * LPAREN expression RPAREN statement
+          statement ::= IF * LPAREN expression RPAREN statement ELSE statement
+
+                        LPAREN shift        8      
+
+State 27:
+          statement ::= IDENTIFIER * ASSIGN expression SEMICOLON
+     (16) factor ::= IDENTIFIER *
+
+                        ASSIGN shift        10     
+                     {default} reduce       16     factor ::= IDENTIFIER
+
+----------------------------------------------------
+Symbols:
+The first-set of non-terminals is shown after the name.
+
+    0: $:
+    1: PLUS (precedence=1)
+    2: MINUS (precedence=1)
+    3: MULTIPLY (precedence=2)
+    4: DIVIDE (precedence=2)
+    5: UMINUS (precedence=3)
+    6: IF (precedence=4)
+    7: ELSE (precedence=5)
+    8: IDENTIFIER
+    9: ASSIGN
+   10: SEMICOLON
+   11: LPAREN
+   12: RPAREN
+   13: WHILE
+   14: LBRACE
+   15: RBRACE
+   16: NUMBER
+   17: program: MINUS IF IDENTIFIER LPAREN WHILE LBRACE NUMBER
+   18: statement_list: MINUS IF IDENTIFIER LPAREN WHILE LBRACE NUMBER
+   19: statement: MINUS IF IDENTIFIER LPAREN WHILE LBRACE NUMBER
+   20: expression: MINUS IDENTIFIER LPAREN NUMBER
+   21: term: MINUS IDENTIFIER LPAREN NUMBER
+   22: factor: MINUS IDENTIFIER LPAREN NUMBER
+----------------------------------------------------
+Syntax-only Symbols:
+The following symbols never carry semantic content.
+
+$ PLUS MINUS MULTIPLY DIVIDE UMINUS IF ELSE ASSIGN SEMICOLON LPAREN RPAREN
+WHILE LBRACE RBRACE program
+----------------------------------------------------
+Rules:
+   0: program ::= statement_list.
+   1: statement_list ::= statement_list statement.
+   2: statement_list ::= statement.
+   3: statement ::= IDENTIFIER ASSIGN expression SEMICOLON.
+   4: statement ::= IF LPAREN expression RPAREN statement. [IF precedence=4]
+   5: statement ::= IF LPAREN expression RPAREN statement ELSE statement. [IF precedence=4]
+   6: statement ::= WHILE LPAREN expression RPAREN statement.
+   7: statement ::= LBRACE statement_list RBRACE.
+   8: statement ::= expression SEMICOLON.
+   9: expression ::= expression PLUS term. [PLUS precedence=1]
+  10: expression ::= expression MINUS term. [MINUS precedence=1]
+  11: expression ::= term.
+  12: term ::= term MULTIPLY factor. [MULTIPLY precedence=2]
+  13: term ::= term DIVIDE factor. [DIVIDE precedence=2]
+  14: term ::= factor.
+  15: factor ::= NUMBER.
+  16: factor ::= IDENTIFIER.
+  17: factor ::= LPAREN expression RPAREN.
+  18: factor ::= MINUS factor. [UMINUS precedence=3]

@@ -1,0 +1,8 @@
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/install/strip.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/install/local.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/install.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/list_install_components.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/rebuild_cache.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/edit_cache.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/tinycc.dir
+/home/rlk/Downloads/chreey-creek/mytinyCC/build/CMakeFiles/tinycompiler_lib.dir

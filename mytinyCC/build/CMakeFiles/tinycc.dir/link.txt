@@ -1,0 +1,1 @@
+/usr/bin/cc  -Wall -Wextra -g -g -O0 -DDEBUG   CMakeFiles/tinycc.dir/src/main.c.o  -o tinycc  libtinycompiler_lib.a 
