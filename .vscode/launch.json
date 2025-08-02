@@ -7,7 +7,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/mytinyCC/build/tinycc",
-      "args": [" test.txt"],
+      "args": ["test.txt"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}/miniCC/build",
       "environment": [],

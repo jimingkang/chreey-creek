@@ -1,0 +1,219 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // 如果您想使用 SQLite 进行本地开发，请取消注释下面这行并注释上面这行
+  // provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Feed {
+  id          String   @id @default(cuid())
+  title       String
+  url         String   @unique
+  description String?
+  category    String   @default("general")
+  language    String   @default("en")
+  isActive    Boolean  @default(true)
+  lastFetched DateTime?
+  fetchInterval Int    @default(3600) // seconds
+  
+  // Relations
+  articles    Article[]
+  subscriptions UserFeedSubscription[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("feeds")
+}
+
+model Article {
+  id          String   @id @default(cuid())
+  title       String
+  content     String?
+  summary     String?
+  url         String   @unique
+  author      String?
+  publishedAt DateTime
+  imageUrl    String?
+  
+  // Relations
+  feedId      String
+  feed        Feed     @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  
+  // Analysis
+  sentiment   SentimentAnalysis?
+  keywords    Keyword[]
+  stockMentions StockMention[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("articles")
+  @@index([publishedAt])
+  @@index([feedId])
+}
+
+model SentimentAnalysis {
+  id              String  @id @default(cuid())
+  
+  // Sentiment scores
+  overallSentiment String // positive, negative, neutral
+  positiveScore   Float   @default(0)
+  negativeScore   Float   @default(0)
+  neutralScore    Float   @default(0)
+  confidenceScore Float   @default(0)
+  
+  // Analysis metadata
+  analysisMethod  String  @default("local")
+  keywordSentiments Json  @default("{}")
+  
+  // Relations
+  articleId       String  @unique
+  article         Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@map("sentiment_analyses")
+}
+
+model Keyword {
+  id        String @id @default(cuid())
+  word      String
+  frequency Int    @default(1)
+  
+  // Relations
+  articleId String
+  article   Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  
+  @@map("keywords")
+  @@unique([word, articleId])
+}
+
+model Stock {
+  id          String @id @default(cuid())
+  symbol      String @unique
+  name        String
+  exchange    String
+  sector      String?
+  industry    String?
+  marketCap   BigInt?
+  isActive    Boolean @default(true)
+  
+  // Relations
+  prices      StockPrice[]
+  mentions    StockMention[]
+  impacts     SentimentImpact[]
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("stocks")
+}
+
+model StockPrice {
+  id            String   @id @default(cuid())
+  date          DateTime @db.Date
+  openPrice     Decimal  @db.Decimal(10, 2)
+  closePrice    Decimal  @db.Decimal(10, 2)
+  highPrice     Decimal  @db.Decimal(10, 2)
+  lowPrice      Decimal  @db.Decimal(10, 2)
+  volume        BigInt
+  change        Decimal  @db.Decimal(10, 2)
+  changePercent Decimal  @db.Decimal(5, 2)
+  
+  // Relations
+  stockId       String
+  stock         Stock    @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  
+  @@map("stock_prices")
+  @@unique([stockId, date])
+  @@index([date])
+}
+
+model StockMention {
+  id            String @id @default(cuid())
+  relevanceScore Float  @default(0.5)
+  mentionCount  Int    @default(1)
+  contextType   String @default("direct") // direct, indirect, sector, market
+  
+  // Relations
+  articleId     String
+  article       Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  stockId       String
+  stock         Stock   @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime @default(now())
+  
+  @@map("stock_mentions")
+  @@unique([articleId, stockId])
+}
+
+model SentimentImpact {
+  id                String   @id @default(cuid())
+  date              DateTime @db.Date
+  avgSentiment      Float
+  sentimentVolume   Int
+  priceImpact       Decimal  @db.Decimal(5, 2)
+  correlationScore  Float
+  predictionAccuracy Float?
+  
+  // Relations
+  stockId           String
+  stock             Stock    @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  @@map("sentiment_impacts")
+  @@unique([stockId, date])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  avatar    String?
+  
+  // Preferences
+  preferences Json   @default("{}")
+  
+  // Relations
+  subscriptions UserFeedSubscription[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("users")
+}
+
+model UserFeedSubscription {
+  id       String @id @default(cuid())
+  
+  // Relations
+  userId   String
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  feedId   String
+  feed     Feed   @relation(fields: [feedId], references: [id], onDelete: Cascade)
+  
+  // Subscription settings
+  isActive Boolean @default(true)
+  notifications Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("user_feed_subscriptions")
+  @@unique([userId, feedId])
+}

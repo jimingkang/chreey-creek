@@ -60,13 +60,7 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    for (int i = 0; source[i]; i++) {
-    if ((unsigned char)source[i] > 127) {
-        source[i] = ' ';
-    }
-    }
-   
-    //char * source="x=1+2*3;";
+
 
     
     // 词法分析

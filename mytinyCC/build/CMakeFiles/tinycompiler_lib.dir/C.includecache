@@ -6,12 +6,6 @@
 
 #IncludeRegexTransform: 
 
-../include/codegen.h
-parser.h
-../include/parser.h
-stdio.h
--
-
 ../include/lexer.h
 stdio.h
 -
@@ -27,24 +21,6 @@ lexer.h
 ../include/lexer.h
 string.h
 -
-
-/home/rlk/Downloads/chreey-creek/mytinyCC/src/codegen.c
-parser.h
-/home/rlk/Downloads/chreey-creek/mytinyCC/src/parser.h
-stdio.h
--
-stdlib.h
--
-string.h
--
-stdarg.h
--
-codegen.h
-/home/rlk/Downloads/chreey-creek/mytinyCC/src/codegen.h
-
-/home/rlk/Downloads/chreey-creek/mytinyCC/src/lexer.c
-lexer.h
-/home/rlk/Downloads/chreey-creek/mytinyCC/src/lexer.h
 
 /home/rlk/Downloads/chreey-creek/mytinyCC/src/parser.c
 parser.h

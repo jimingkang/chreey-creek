@@ -223,13 +223,39 @@ ASTNode* parse_if(Parser* parser) {
 */
 
 
-// Updated parse_program() to handle assignment and if statement
 ASTNode* parse_program(Parser* parser) {
     ASTNode* root = create_node(AST_PROGRAM);
     ASTNode* current = NULL;
 
     while (parser->current_token.type != TOK_EOF) {
-        ASTNode* stmt = parse_statement(parser);
+        ASTNode* stmt = NULL;
+
+        // 识别函数定义：例如 int main(...)
+        if ((parser->current_token.type == TOK_INT ||
+             parser->current_token.type == TOK_VOID ||
+             parser->current_token.type == TOK_CHAR_TYPE) &&
+            parser->peek_token.type == TOK_IDENTIFIER) {
+
+            // 进一步 peek 判断是否函数（必须接着是 LPAREN）
+            Token third = get_next_token(parser->lexer);
+            if (third.type == TOK_LPAREN) {
+                // 回退 peek_token（手动重设）
+                parser->lexer->current -= third.length;
+                parser->peek_token = third;
+
+                stmt = parse_function(parser);
+            } else {
+                // 非函数，回退 lexer 状态
+                parser->lexer->current -= third.length;
+                parser->peek_token = third;
+                stmt = parse_statement(parser);
+            }
+
+        } else {
+            // 普通语句（表达式、if、while 等）
+            stmt = parse_statement(parser);
+        }
+
         if (!stmt) break;
 
         if (!root->left) {
@@ -264,20 +290,6 @@ ASTNode* parse_declaration(Parser* parser) {
     parser_error(parser, "Expected declaration");
     return NULL;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     
@@ -492,3 +504,78 @@ ASTNode* parse_block(Parser* parser) {
     expect_token(parser, TOK_RBRACE);
     return block;
 }
+
+ASTNode* parse_function(Parser* parser) {
+    // 1. 返回类型
+    TokenType return_type = parser->current_token.type;
+    advance_token(parser); // consume return type
+
+    // 2. 函数名
+    if (parser->current_token.type != TOK_IDENTIFIER) {
+        parser_error(parser, "Expected function name after return type");
+        return NULL;
+    }
+    char* func_name = COPY_STRING(parser->current_token.value);
+    advance_token(parser); // consume function name
+
+    // 3. (
+    if (!expect_token(parser, TOK_LPAREN)) return NULL;
+
+    // 4. 参数列表
+    ASTNode* param_list = NULL;
+    ASTNode* last_param = NULL;
+
+    while (parser->current_token.type != TOK_RPAREN && parser->current_token.type != TOK_EOF) {
+        // 类型 + 标识符
+        if (parser->current_token.type != TOK_INT &&
+            parser->current_token.type != TOK_CHAR_TYPE &&
+            parser->current_token.type != TOK_VOID) {
+            parser_error(parser, "Expected parameter type");
+            return NULL;
+        }
+
+        char* param_type = COPY_STRING(parser->current_token.value);
+        advance_token(parser);
+
+        if (parser->current_token.type != TOK_IDENTIFIER) {
+            parser_error(parser, "Expected parameter name");
+            return NULL;
+        }
+
+        ASTNode* param = create_node(AST_DECLARATION);
+        param->data.declaration.name = COPY_STRING(parser->current_token.value);
+        param->data.declaration.type = param_type;
+        param->data.declaration.initializer = NULL;
+        advance_token(parser);
+
+        // 连接参数链表
+        if (!param_list) {
+            param_list = param;
+            last_param = param;
+        } else {
+            last_param->next = param;
+            last_param = param;
+        }
+
+        if (parser->current_token.type == TOK_COMMA) {
+            advance_token(parser); // consume ','
+        } else {
+            break;
+        }
+    }
+
+    // 5. )
+    if (!expect_token(parser, TOK_RPAREN)) return NULL;
+
+    // 6. 函数体
+    ASTNode* body = parse_block(parser); // parse_block() 应返回 AST_BLOCK
+
+    // 7. 创建函数节点
+    ASTNode* func_node = create_node(AST_FUNCTION);
+    func_node->data.function.name = func_name;
+    func_node->data.function.params = param_list;
+    func_node->data.function.body = body;
+
+    return func_node;
+}
+
